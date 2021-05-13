@@ -1,6 +1,7 @@
 package com.viveknaskar.microservices.currencyexchangeservice;
 
 import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
+import io.github.resilience4j.ratelimiter.annotation.RateLimiter;
 import io.github.resilience4j.retry.annotation.Retry;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,12 +28,22 @@ public class CircuitBreakerController {
      * related service fails, preventing the failure from cascading and giving the
      * failing service time to recover.
      */
-    @CircuitBreaker(name = "default", fallbackMethod = "otherResponse")
+    //@CircuitBreaker(name = "default", fallbackMethod = "otherResponse")
+
+    /**
+     * Rate Limiting basically says that in 10 seconds, 500 calls to the default api
+     */
+    @RateLimiter(name = "default")
     public String sampleApi() {
         LOGGER.info("Sample api call received");
+        /**
         ResponseEntity<String> responseEntity =
                 new RestTemplate().getForEntity("http://localhost:8080/some-other-api", null);
         return responseEntity.getBody();
+        */
+
+        return "Sample api";
+
     }
 
     private String otherResponse(Exception ex) {
