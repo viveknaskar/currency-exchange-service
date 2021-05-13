@@ -13,12 +13,12 @@ public class CircuitBreakerController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(CircuitBreakerController.class);
 
+    @GetMapping("/sample-api")
     /**
      * By default, the Retry annotation will call the endpoint 3 times
      * The number of retries can be modified by configuring in the application.properties
-     * @return
+     * The fallback method will be executed to give the desired response instead of failure
      */
-    @GetMapping("/sample-api")
     @Retry(name = "sample-api", fallbackMethod = "otherResponse")
     public String sampleApi() {
         LOGGER.info("Sample api call received");
