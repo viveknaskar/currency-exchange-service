@@ -1,5 +1,6 @@
 package com.viveknaskar.microservices.currencyexchangeservice;
 
+import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 import io.github.resilience4j.retry.annotation.Retry;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,7 +20,14 @@ public class CircuitBreakerController {
      * The number of retries can be modified by configuring in the application.properties
      * The fallback method will be executed to give the desired response instead of failure
      */
-    @Retry(name = "sample-api", fallbackMethod = "otherResponse")
+    // @Retry(name = "sample-api", fallbackMethod = "otherResponse")
+
+    /**
+     * Circuit Breaker lets the microservice application to continue operating when a
+     * related service fails, preventing the failure from cascading and giving the
+     * failing service time to recover.
+     */
+    @CircuitBreaker(name = "default", fallbackMethod = "otherResponse")
     public String sampleApi() {
         LOGGER.info("Sample api call received");
         ResponseEntity<String> responseEntity =
